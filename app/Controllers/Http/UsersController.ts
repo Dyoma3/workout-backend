@@ -24,9 +24,12 @@ export default class UsersController {
 		return token;
 	}
 
-	public async update() {
-		console.log('update user');
-		return { value: 0 };
+	public async update({ params, request }: HttpContextContract) {
+		const email: string = params.id;
+		const user = await User.findByOrFail('email', email);
+		user.name = request.input('name');
+		await user.save();
+		return user.toJSON();
 	}
 
 	public async destroy({ params, response }: HttpContextContract) {
