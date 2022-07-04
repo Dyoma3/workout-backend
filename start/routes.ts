@@ -11,3 +11,5 @@ Route.resource('users', 'UsersController').only(['update', 'destroy']).middlewar
 Route.post('signup', 'UsersController.signup');
 
 Route.post('login', 'UsersController.login');
+
+Route.resource('exercises', 'ExercisesController').apiOnly();

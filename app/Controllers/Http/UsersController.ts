@@ -24,21 +24,7 @@ export default class UsersController {
 		return token;
 	}
 
-	public async update({ params, request, auth, response }: HttpContextContract) {
-		/* const email: string = params.id;
-		await auth.use('api').authenticate();
-		const authUser = auth.use('api').user;
-		if (authUser?.email !== email) {
-			response.status(401);
-			return {
-				errors: [
-					{
-						message: "API token doesn't correspond to email",
-					},
-				],
-			};
-		} */
-
+	public async update({ params, request }: HttpContextContract) {
 		const email: string = params.id;
 		const user = await User.findByOrFail('email', email);
 		user.name = request.input('name');
@@ -51,6 +37,6 @@ export default class UsersController {
 		const user = await User.findByOrFail('email', email);
 		await user.delete();
 		response.status(204);
-		return {};
+		return;
 	}
 }
