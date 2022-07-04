@@ -29,8 +29,11 @@ export default class UsersController {
 		return { value: 0 };
 	}
 
-	public async destroy() {
-		console.log('destroy user');
-		return { value: 0 };
+	public async destroy({ params, response }: HttpContextContract) {
+		const email: string = params.id;
+		const user = await User.findByOrFail('email', email);
+		await user.delete();
+		response.status(204);
+		return {};
 	}
 }
