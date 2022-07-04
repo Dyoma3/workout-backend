@@ -4,7 +4,9 @@ Route.get('/', async () => {
 	return { hello: 'world' };
 });
 
-Route.resource('users', 'UsersController').only(['update', 'destroy']);
+Route.resource('users', 'UsersController').only(['update', 'destroy']).middleware({
+	'*': 'auth',
+});
 
 Route.post('signup', 'UsersController.signup');
 
