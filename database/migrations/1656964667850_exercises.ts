@@ -6,6 +6,7 @@ export default class extends BaseSchema {
 	public async up() {
 		this.schema.alterTable(this.tableName, (table) => {
 			table.dropColumns('pr_reps', 'pr_weight');
+			table.unique(['name']);
 		});
 	}
 
@@ -13,6 +14,7 @@ export default class extends BaseSchema {
 		this.schema.alterTable(this.tableName, (table) => {
 			table.integer('pr_reps');
 			table.integer('pr_weight');
+			table.dropUnique(['name']);
 		});
 	}
 }
