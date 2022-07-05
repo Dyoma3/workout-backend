@@ -5,6 +5,15 @@ export default class Exercise extends BaseModel {
 	@column({ isPrimary: true })
 	public id: number;
 
+	@column()
+	public name: string;
+
+	@column()
+	public bodyPart: string;
+
+	@column()
+	public category: string;
+
 	@column.dateTime({ autoCreate: true })
 	public createdAt: DateTime;
 

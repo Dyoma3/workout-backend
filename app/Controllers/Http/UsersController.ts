@@ -2,6 +2,14 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import User from 'App/Models/User';
 
 export default class UsersController {
+	public async index() {
+		return await User.all();
+	}
+
+	public async show({ params }: HttpContextContract) {
+		return await User.findOrFail(params.id);
+	}
+
 	public async signup({ request, auth }: HttpContextContract) {
 		const name: string = request.input('name');
 		const email: string = request.input('email');
@@ -24,33 +32,17 @@ export default class UsersController {
 		return token;
 	}
 
-	public async update({ params, request, auth, response }: HttpContextContract) {
-		/* const email: string = params.id;
-		await auth.use('api').authenticate();
-		const authUser = auth.use('api').user;
-		if (authUser?.email !== email) {
-			response.status(401);
-			return {
-				errors: [
-					{
-						message: "API token doesn't correspond to email",
-					},
-				],
-			};
-		} */
-
-		const email: string = params.id;
-		const user = await User.findByOrFail('email', email);
+	public async update({ params, request }: HttpContextContract) {
+		const user = await User.findOrFail(params.id);
 		user.name = request.input('name');
 		await user.save();
 		return user.toJSON();
 	}
 
 	public async destroy({ params, response }: HttpContextContract) {
-		const email: string = params.id;
-		const user = await User.findByOrFail('email', email);
+		const user = await User.findOrFail(params.id);
 		await user.delete();
 		response.status(204);
-		return {};
+		return;
 	}
 }
