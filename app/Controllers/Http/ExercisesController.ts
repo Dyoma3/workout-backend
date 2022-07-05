@@ -29,17 +29,12 @@ export default class ExercisesController {
 		return;
 	}
 
-	public async update({ params, request, response }: HttpContextContract) {
+	public async update({ params, request }: HttpContextContract) {
 		const payload = await request.validate(UpdateExercise);
 		const { id } = params;
 		const exercise = await Exercise.findOrFail(id);
 		exercise.merge(payload);
-		try {
-			await exercise.save();
-		} catch (e) {
-			// violates unique contraint
-			return response.status(409).send({ error: 'Exercise name already exists' });
-		}
+		await exercise.save();
 		return exercise.toJSON();
 	}
 }
