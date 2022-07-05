@@ -8,6 +8,10 @@ export default class ExercisesController {
 		return await Exercise.all();
 	}
 
+	public async show({ params }: HttpContextContract) {
+		return await Exercise.findOrFail(params.id);
+	}
+
 	public async store({ request, auth, response }: HttpContextContract) {
 		const payload = await request.validate(CreateExercise);
 		await auth.use('api').authenticate();
