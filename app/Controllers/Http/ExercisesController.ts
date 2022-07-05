@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import Exercise from 'App/Models/Exercise';
+import CreateExercise from 'App/Validators/CreateExerciseValidator';
 
 export default class ExercisesController {
 	public async index() {
@@ -7,8 +8,9 @@ export default class ExercisesController {
 	}
 
 	public async store({ request, auth, response }: HttpContextContract) {
+		const payload = await request.validate(CreateExercise);
 		await auth.use('api').authenticate();
-		const { name, bodyPart, category } = request.body();
+		const { name, bodyPart, category } = payload;
 		const exercise = await Exercise.create({
 			name,
 			bodyPart,
