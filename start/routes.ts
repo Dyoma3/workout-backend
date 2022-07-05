@@ -14,3 +14,5 @@ Route.post('signup', 'UsersController.signup');
 Route.post('login', 'UsersController.login');
 
 Route.resource('exercises', 'ExercisesController').apiOnly();
+
+Route.resource('workouts', 'WorkoutsController').apiOnly();
