@@ -1,9 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import Workout from 'App/Models/Workout';
-import IndexWorkout from 'App/Validators/IndexWorkoutValidator';
+import User from 'App/Models/User';
 
 export default class WorkoutsController {
-	public async index({ request }: HttpContextContract) {
-		const { userId } = await request.validate(IndexWorkout);
+	public async index({ params }: HttpContextContract) {
+		const user = await User.findOrFail(params.user_id);
+		const workouts = await user.related('workouts').query();
+		return workouts.map((workout) => workout.toJSON());
 	}
 }

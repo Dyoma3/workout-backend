@@ -5,11 +5,11 @@ import UpdateExercise from 'App/Validators/UpdateExerciseValidator';
 
 export default class ExercisesController {
 	public async index() {
-		return await Exercise.all();
+		return (await Exercise.all()).map((exercise) => exercise.toJSON());
 	}
 
 	public async show({ params }: HttpContextContract) {
-		return await Exercise.findOrFail(params.id);
+		return (await Exercise.findOrFail(params.id)).toJSON();
 	}
 
 	public async store({ request, auth, response }: HttpContextContract) {
