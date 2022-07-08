@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
-import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm';
+import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm';
 import User from './User';
+import WorkoutExercise from './WorkoutExercise';
 
 export default class Workout extends BaseModel {
 	@column({ isPrimary: true })
@@ -26,4 +27,7 @@ export default class Workout extends BaseModel {
 
 	@belongsTo(() => User)
 	public user: BelongsTo<typeof User>;
+
+	@hasMany(() => WorkoutExercise)
+	public workoutExercises: HasMany<typeof WorkoutExercise>;
 }
