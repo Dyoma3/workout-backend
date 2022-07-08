@@ -3,22 +3,18 @@ import User from 'App/Models/User';
 
 export default class UsersController {
 	public async index() {
-		return await User.all();
+		return (await User.all()).map((user) => user.toJSON());
 	}
 
 	public async show({ params }: HttpContextContract) {
-		return await User.findOrFail(params.id);
+		return (await User.findOrFail(params.id)).toJSON();
 	}
 
 	public async signup({ request, auth }: HttpContextContract) {
 		const name: string = request.input('name');
 		const email: string = request.input('email');
 		const password: string = request.input('password');
-
-		// in case user already exists
 		const user = await User.findBy('email', email);
-
-		// if it's a new user
 		if (!user) await User.create({ name, email, password });
 
 		const token = await auth.use('api').attempt(email, password);
