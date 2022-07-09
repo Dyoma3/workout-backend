@@ -6,7 +6,7 @@ export default class UpdateWorkoutValidator {
 
 	public schema = schema.create({
 		name: schema.string.optional([rules.trim()]),
-		end_time: schema.date.nullableAndOptional(),
+		endTime: schema.date.nullableAndOptional(),
 	});
 
 	public messages: CustomMessages = {};

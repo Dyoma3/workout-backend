@@ -4,6 +4,8 @@ import Exercise from './Exercise';
 import Workout from './Workout';
 
 export default class WorkoutExercise extends BaseModel {
+	public static table = 'workout_exercise';
+
 	@column({ isPrimary: true })
 	public id: number;
 
@@ -12,9 +14,6 @@ export default class WorkoutExercise extends BaseModel {
 
 	@column()
 	public workoutId: number;
-
-	@column()
-	public forTemplate: boolean;
 
 	@column.dateTime({ autoCreate: true })
 	public createdAt: DateTime;

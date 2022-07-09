@@ -1,6 +1,16 @@
 import { DateTime } from 'luxon';
-import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm';
+import {
+	BaseModel,
+	column,
+	belongsTo,
+	BelongsTo,
+	hasMany,
+	HasMany,
+	manyToMany,
+	ManyToMany,
+} from '@ioc:Adonis/Lucid/Orm';
 import User from './User';
+import Exercise from 'App/Models/Exercise';
 import WorkoutExercise from './WorkoutExercise';
 
 export default class Workout extends BaseModel {
@@ -30,4 +40,7 @@ export default class Workout extends BaseModel {
 
 	@hasMany(() => WorkoutExercise)
 	public workoutExercises: HasMany<typeof WorkoutExercise>;
+
+	@manyToMany(() => Exercise, { pivotTable: 'workout_exercise' })
+	public exercises: ManyToMany<typeof Exercise>;
 }
