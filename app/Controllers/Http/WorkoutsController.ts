@@ -6,24 +6,35 @@ import UpdateWorkout from 'App/Validators/UpdateWorkoutValidator';
 export default class WorkoutsController {
 	public async index({ params }: HttpContextContract) {
 		const user = await User.findOrFail(params.user_id);
-		const workouts = await user.related('workouts').query();
+		const workouts = await user.related('workouts').query().preload('exercises');
 		return workouts.map((workout) => workout.toJSON());
 	}
 
 	public async show({ params }: HttpContextContract) {
 		const { user_id: userId, id } = params;
 		const user = await User.findOrFail(userId);
-		return await user.related('workouts').query().where('id', id).firstOrFail();
+		return await user
+			.related('workouts')
+			.query()
+			.where('id', id)
+			.preload('exercises')
+			.firstOrFail();
 	}
 
 	public async store({ auth, request }: HttpContextContract) {
-		const { name, template } = await request.validate(CreateWorkout);
-		return (
-			await auth.user!.related('workouts').create({
-				name,
-				template: Boolean(template),
-			})
-		).toJSON();
+		const { name, template, exercises } = await request.validate(CreateWorkout);
+		const workout = await auth.user!.related('workouts').create({
+			name,
+			template: Boolean(template),
+		});
+		await workout.related('workoutExercises').createMany(
+			exercises.map((exerciseId) => ({
+				workoutId: workout.id,
+				exerciseId,
+			}))
+		);
+		await workout.load('exercises');
+		return workout.toJSON();
 	}
 
 	public async update({ auth, request, params }: HttpContextContract) {

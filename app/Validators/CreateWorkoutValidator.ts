@@ -7,6 +7,7 @@ export default class CreateWorkoutValidator {
 	public schema = schema.create({
 		name: schema.string([rules.trim()]),
 		template: schema.boolean.optional(),
+		exercises: schema.array().members(schema.number()),
 	});
 
 	public messages: CustomMessages = {};
