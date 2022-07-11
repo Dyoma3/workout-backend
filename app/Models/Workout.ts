@@ -10,7 +10,7 @@ import {
 	ManyToMany,
 } from '@ioc:Adonis/Lucid/Orm';
 import User from './User';
-import Exercise from 'App/Models/Exercise';
+import Exercise from './/Exercise';
 import WorkoutExercise from './WorkoutExercise';
 
 export default class Workout extends BaseModel {

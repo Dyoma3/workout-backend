@@ -7,7 +7,7 @@ import AddOrRemoveWorkoutExercises from 'App/Validators/AddOrRemoveWorkoutExerci
 export default class WorkoutsController {
 	public async index({ params }: HttpContextContract) {
 		const user = await User.findOrFail(params.user_id);
-		const workouts = await user.related('workouts').query().preload('exercises');
+		const workouts = await user.related('workouts').query();
 		return workouts.map((workout) => workout.toJSON());
 	}
 
@@ -18,7 +18,9 @@ export default class WorkoutsController {
 			.related('workouts')
 			.query()
 			.where('id', id)
-			.preload('exercises')
+			.preload('exercises', (exercisesQuery) => {
+				exercisesQuery.preload('sets');
+			})
 			.firstOrFail();
 	}
 

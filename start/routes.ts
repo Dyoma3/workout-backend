@@ -34,3 +34,5 @@ Route.patch(
 	'users/:user_id/workouts/:id/remove-exercises',
 	'WorkoutsController.removeExercises'
 ).middleware('auth');
+
+Route.resource('users.workouts.sets', 'SetsController').apiOnly().middleware({ '*': 'auth' });

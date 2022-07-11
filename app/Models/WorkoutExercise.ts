@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon';
-import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm';
+import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm';
 import Exercise from './Exercise';
 import Workout from './Workout';
+import Set from 'App/Models/Set';
 
 export default class WorkoutExercise extends BaseModel {
 	public static table = 'workout_exercise';
@@ -26,4 +27,7 @@ export default class WorkoutExercise extends BaseModel {
 
 	@belongsTo(() => Workout)
 	public workout: BelongsTo<typeof Workout>;
+
+	@hasMany(() => Set)
+	public sets: HasMany<typeof Set>;
 }
