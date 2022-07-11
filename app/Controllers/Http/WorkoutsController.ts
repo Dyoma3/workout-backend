@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import User from 'App/Models/User';
 import CreateWorkout from 'App/Validators/CreateWorkoutValidator';
 import UpdateWorkout from 'App/Validators/UpdateWorkoutValidator';
+import AddWorkoutExercises from 'App/Validators/AddWorkoutExercisesValidator';
 
 export default class WorkoutsController {
 	public async index({ params }: HttpContextContract) {
@@ -27,12 +28,7 @@ export default class WorkoutsController {
 			name,
 			template: Boolean(template),
 		});
-		await workout.related('workoutExercises').createMany(
-			exercises.map((exerciseId) => ({
-				workoutId: workout.id,
-				exerciseId,
-			}))
-		);
+		await workout.related('exercises').attach(exercises);
 		await workout.load('exercises');
 		return workout.toJSON();
 	}
@@ -58,5 +54,17 @@ export default class WorkoutsController {
 		await workout.delete();
 		response.status(204);
 		return;
+	}
+
+	public async addExercises({ auth, params, request }: HttpContextContract) {
+		const { exercises } = await request.validate(AddWorkoutExercises);
+		const workout = await auth
+			.user!.related('workouts')
+			.query()
+			.where('id', params.id)
+			.firstOrFail();
+		await workout.related('exercises').attach(exercises);
+		await workout.load('exercises');
+		return workout.toJSON();
 	}
 }
