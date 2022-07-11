@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm';
-import WorkoutExercise from 'App/Models/WorkoutExercise';
+import WorkoutExercise from './WorkoutExercise';
 
 export default class Set extends BaseModel {
 	@column({ isPrimary: true })

@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon';
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm';
+import { BaseModel, column, hasManyThrough, HasManyThrough } from '@ioc:Adonis/Lucid/Orm';
+import Set from './Set';
+import WorkoutExercise from './WorkoutExercise';
 
 export default class Exercise extends BaseModel {
 	@column({ isPrimary: true })
@@ -19,4 +21,7 @@ export default class Exercise extends BaseModel {
 
 	@column.dateTime({ autoCreate: true, autoUpdate: true })
 	public updatedAt: DateTime;
+
+	@hasManyThrough([() => Set, () => WorkoutExercise])
+	public sets: HasManyThrough<typeof Set>;
 }

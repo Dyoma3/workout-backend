@@ -1,6 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import CreateSet from 'App/Validators/CreateSetValidator';
-import Set from 'App/Models/Set';
 
 export default class SetsController {
 	public async store({ auth, request, params, response }: HttpContextContract) {
