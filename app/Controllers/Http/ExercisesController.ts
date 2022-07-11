@@ -21,7 +21,7 @@ export default class ExercisesController {
 			category,
 		});
 		response.status(201);
-		return exercise;
+		return exercise.toJSON();
 	}
 
 	public async update({ params, request }: HttpContextContract) {
