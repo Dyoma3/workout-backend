@@ -29,3 +29,8 @@ Route.patch(
 	'users/:user_id/workouts/:id/add-exercises',
 	'WorkoutsController.addExercises'
 ).middleware('auth');
+
+Route.patch(
+	'users/:user_id/workouts/:id/remove-exercises',
+	'WorkoutsController.removeExercises'
+).middleware('auth');

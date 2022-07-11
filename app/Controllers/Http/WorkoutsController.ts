@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import User from 'App/Models/User';
 import CreateWorkout from 'App/Validators/CreateWorkoutValidator';
 import UpdateWorkout from 'App/Validators/UpdateWorkoutValidator';
-import AddWorkoutExercises from 'App/Validators/AddWorkoutExercisesValidator';
+import AddOrRemoveWorkoutExercises from 'App/Validators/AddOrRemoveWorkoutExercisesValidator';
 
 export default class WorkoutsController {
 	public async index({ params }: HttpContextContract) {
@@ -57,13 +57,25 @@ export default class WorkoutsController {
 	}
 
 	public async addExercises({ auth, params, request }: HttpContextContract) {
-		const { exercises } = await request.validate(AddWorkoutExercises);
+		const { exercises } = await request.validate(AddOrRemoveWorkoutExercises);
 		const workout = await auth
 			.user!.related('workouts')
 			.query()
 			.where('id', params.id)
 			.firstOrFail();
 		await workout.related('exercises').attach(exercises);
+		await workout.load('exercises');
+		return workout.toJSON();
+	}
+
+	public async removeExercises({ auth, params, request }: HttpContextContract) {
+		const { exercises } = await request.validate(AddOrRemoveWorkoutExercises);
+		const workout = await auth
+			.user!.related('workouts')
+			.query()
+			.where('id', params.id)
+			.firstOrFail();
+		await workout.related('exercises').detach(exercises);
 		await workout.load('exercises');
 		return workout.toJSON();
 	}
